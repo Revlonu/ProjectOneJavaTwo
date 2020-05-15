@@ -55,6 +55,8 @@ public class MainWindow extends JFrame {
         }
     }
 
+
+
     private static void method1(Animal a) {
         a.name = "Barsik";
     }

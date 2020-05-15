@@ -7,6 +7,7 @@ public class MainCanvas extends JPanel {
 
     MainWindow gameController;
     long lastFrame;
+    float counterTime = 0;
 
     MainCanvas(MainWindow gameController) {
         this.gameController = gameController;
@@ -20,6 +21,12 @@ public class MainCanvas extends JPanel {
         float deltaTime = (currentTime - lastFrame) * 0.000000001f;
         gameController.onDrawFrame(this, g, deltaTime);
         lastFrame = currentTime;
+        counterTime += deltaTime;
+        if(counterTime > 5){
+            Background.background(this);
+            counterTime -= 5;
+        }
+
         try {
             Thread.sleep(17);
         } catch (InterruptedException e) {
