@@ -1,4 +1,7 @@
-package ru.gb.jtwo.alesson.online;
+package ru.gb.jtwo.alesson.online.Core;
+
+import ru.gb.jtwo.alesson.online.balloons.Background;
+import ru.gb.jtwo.alesson.online.balloons.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +12,7 @@ public class MainCanvas extends JPanel {
     long lastFrame;
     float counterTime = 0;
 
-    MainCanvas(MainWindow gameController) {
+    public MainCanvas(MainWindow gameController) {
         this.gameController = gameController;
         lastFrame = System.nanoTime();
     }
@@ -21,12 +24,6 @@ public class MainCanvas extends JPanel {
         float deltaTime = (currentTime - lastFrame) * 0.000000001f;
         gameController.onDrawFrame(this, g, deltaTime);
         lastFrame = currentTime;
-        counterTime += deltaTime;
-        if(counterTime > 5){
-            Background.background(this);
-            counterTime -= 5;
-        }
-
         try {
             Thread.sleep(17);
         } catch (InterruptedException e) {

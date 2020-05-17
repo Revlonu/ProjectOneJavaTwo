@@ -1,8 +1,10 @@
-package ru.gb.jtwo.alesson.online;
+package ru.gb.jtwo.alesson.online.Core;
+
+import ru.gb.jtwo.alesson.online.Core.MainCanvas;
 
 import java.awt.*;
 
-public abstract class Sprite {
+public abstract class Sprite implements GameObject {
     protected float x;
     protected float y;
     protected float halfWidth;
@@ -39,7 +41,4 @@ public abstract class Sprite {
         return 2f * halfHeight;
     }
 
-    public void update(MainCanvas canvas, float deltaTime) {}
-
-    public void render(MainCanvas canvas, Graphics g) {}
 }
