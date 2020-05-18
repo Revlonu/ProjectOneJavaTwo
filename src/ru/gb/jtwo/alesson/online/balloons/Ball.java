@@ -1,4 +1,7 @@
-package ru.gb.jtwo.alesson.online;
+package ru.gb.jtwo.alesson.online.balloons;
+
+import ru.gb.jtwo.alesson.online.Core.MainCanvas;
+import ru.gb.jtwo.alesson.online.Core.Sprite;
 
 import java.awt.*;
 
@@ -10,7 +13,7 @@ public class Ball extends Sprite {
     private float vX = (float) (100f + (Math.random() * 200f));
     private float vY = (float) (100f + (Math.random() * 200f));
 
-    Ball() {
+    public Ball() {
         halfHeight = 20 + (float) (Math.random() * 50f);
         halfWidth = halfHeight;
     }
