@@ -57,7 +57,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         scrollUser.setPreferredSize(new Dimension(100, 0));
         cbAlwaysOnTop.addActionListener(this);
         btnSend.addActionListener(this);
-
+        tfMessage.addActionListener(this);
+        
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
         panelTop.add(cbAlwaysOnTop);
@@ -68,6 +69,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         panelBottom.add(btnDisconnect, BorderLayout.WEST);
         panelBottom.add(tfMessage, BorderLayout.CENTER);
         panelBottom.add(btnSend, BorderLayout.EAST);
+
 
 
         add(scrollLog, BorderLayout.CENTER);
@@ -85,7 +87,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         Object src = e.getSource();
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
-        } else if(src == btnSend){
+        } else if(src == btnSend || src == tfMessage){
             if (tfMessage.getText().equals("")){ // Проверка ввели ли текст
             } else {
                 sendMessage();
@@ -94,6 +96,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             throw new RuntimeException("Unknown source: " + src);
         }
     }
+
+
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
