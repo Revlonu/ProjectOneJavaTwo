@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler, SocketThreadListener {
 
@@ -29,8 +30,9 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JButton btnDisconnect = new JButton("<html><b>Disconnect</b></html>");
     private final JTextField tfMessage = new JTextField();
     private final JButton btnSend = new JButton("Send");
-
     private final JList<String> userList = new JList<>();
+    private final JScrollPane scrollLog = new JScrollPane(log);
+    private final JScrollPane scrollUser = new JScrollPane(userList);
     private boolean shownIoErrors = false;
 
     SocketThread socketThread;
@@ -50,8 +52,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         setLocationRelativeTo(null);
         setSize(WIDTH, HEIGHT);
         log.setEditable(false);
-        JScrollPane scrollLog = new JScrollPane(log);
-        JScrollPane scrollUser = new JScrollPane(userList);
+
         String[] users = {"user1", "user2", "user3", "user4", "user5",
                 "user_with_an_exceptionally_long_name_in_this_chat"};
         userList.setListData(users);
@@ -60,6 +61,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         btnSend.addActionListener(this);
         tfMessage.addActionListener(this);
         btnLogin.addActionListener(this);
+        btnDisconnect.addActionListener(this);
 
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
@@ -74,10 +76,11 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
 
         add(scrollLog, BorderLayout.CENTER);
         add(scrollUser, BorderLayout.EAST);
-        add(panelTop, BorderLayout.NORTH);
-        add(panelBottom, BorderLayout.SOUTH);
+
+        visiblePanel(false);
 
         setVisible(true);
+
     }
 
 
@@ -90,6 +93,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             sendMessage();
         } else if (src == btnLogin) {
             connect();
+        } else if (src == btnDisconnect) {
+            disconnect();
         } else {
             throw new RuntimeException("Unknown source: " + src);
         }
@@ -99,10 +104,31 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         try {
             Socket socket = new Socket(tfIPAddress.getText(), Integer.parseInt(tfPort.getText()));
             socketThread = new SocketThread("Client", this, socket);
-        } catch (IOException exception) {
+            visiblePanel(true);
+            } catch (IOException exception) {
             showException(Thread.currentThread(), exception);
         }
     }
+    //Если передаём True тогда пропадает панель для подключение, появляется панель для отправки сообщений и отключения. False обратный результат
+    private void visiblePanel(Boolean visibleBottom){
+        if(visibleBottom){
+            remove(panelTop);
+            add(panelBottom, BorderLayout.SOUTH);
+            setVisible(true);
+        } else {
+            remove(panelBottom);
+            add(panelTop, BorderLayout.NORTH);
+            setVisible(true);
+        }
+    }
+
+    private void disconnect() {
+        socketThread.close();
+        visiblePanel(false);
+
+
+    }
+
 
     private void sendMessage() {
         String msg = tfMessage.getText();
