@@ -8,9 +8,12 @@ import ru.gb.jtwo.network.SocketThreadListener;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
+
+import static ru.gb.chat.library.Library.TYPE_BROADCAST;
 
 public class ChatServer implements ServerSocketThreadListener, SocketThreadListener {
 
@@ -142,11 +145,11 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
     }
 
     private void sendToAllAuthorizedClients(String msg) {
-        for (int i = 0; i < clients.size(); i++) {
-            ClientThread client = (ClientThread) clients.get(i);
-            if (!client.isAuthorized()) continue;
-            client.sendMessage(msg);
-        }
+            for (int i = 0; i < clients.size(); i++) {
+                ClientThread client = (ClientThread) clients.get(i);
+                if (!client.isAuthorized()) continue;
+                client.sendMessage(msg);
+            }
     }
 
     @Override
